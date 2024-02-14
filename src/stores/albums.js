@@ -122,7 +122,9 @@ export const albumsStore = defineStore({
       this.pageLoad = true;
 
       try {
-        this.albumsList = await fetch('/api/albums')
+        let api = import.meta.env.VITE_API_URL
+        let url = api + 'albums';
+        this.albumsList = await fetch(url)
         .then((response) => response.json()) 
       } catch (error) {
         this.error = error
@@ -139,7 +141,8 @@ export const albumsStore = defineStore({
       let artist = this.album.artist
       
       try {
-        this.albumData = await fetch(`/api/album?albumName=${album}&artistName=${artist}`)
+        let api = import.meta.env.VITE_API_URL
+        this.albumData = await fetch(`${api}album?albumName=${album}&artistName=${artist}`)
         .then((response) => response.json()) 
       } catch (error) {
         this.error = error
