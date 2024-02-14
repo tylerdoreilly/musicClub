@@ -1,0 +1,65 @@
+/* SCSS RGB */
+$ivory: rgba(246, 247, 235, 1);
+$cinnabar: rgba(233, 79, 55, 1);
+$onyx: rgba(57, 62, 65, 1);
+$steel-blue: rgba(63, 136, 197, 1);
+$keppel: rgba(68, 187, 164, 1);
+$white-smoke: rgba(242, 244, 243, 1);
+$gunmetal: rgba(34, 51, 59, 1);
+$base-white:#fff;
+$exai-grey:#32363f;
+$exai-green:#44bd87;
+$exai-dark-soft:#202127;
+$exai-text-dark-1:rgba(235, 235, 235, 0.64);
+$overlay: #000000da;
+
+/* Text ***************************************/
+$base-text:#2c3e50;
+$exai-dark-blue:#1b1b1f;
+
+/* Backgrounds ***************************************/
+
+$default-background: $exai-grey;
+$primary-background: $exai-green;
+$secondary-background: $white-smoke;
+$dark-background: $gunmetal;
+
+$template-background: lighten( $white-smoke, 1% );
+$sidebar-bg:$white-smoke;
+
+/* Borders ***************************************/
+$border: #ccc;
+$default-border: #ccc;
+$primary-border: $keppel;
+$secondary-border: $white-smoke;
+$dark-border: $gunmetal;
+
+
+/* SCSS Gradient */
+$gradient-top: linear-gradient(0deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-right: linear-gradient(90deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-bottom: linear-gradient(180deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-left: linear-gradient(270deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-top-right: linear-gradient(45deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-bottom-right: linear-gradient(135deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-top-left: linear-gradient(225deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-bottom-left: linear-gradient(315deg, #f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+$gradient-radial: radial-gradient(#f6f7ebff, #e94f37ff, #393e41ff, #3f88c5ff, #44bba4ff);
+
+
+.page-wrapper{
+    padding:0px 20px;
+}
+
+.page-header{
+    display:flex;
+    flex-direction: row;
+    align-items:center;
+    width:100%;
+    min-height:150px;
+  
+    &__title{
+      color:white;
+  
+    }
+  }
