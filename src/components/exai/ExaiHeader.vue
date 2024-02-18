@@ -1,8 +1,7 @@
 <script setup>
-  import { computed, ref, toRefs, useCssModule, useSlots } from 'vue'
+  import { computed, toRefs, useSlots } from 'vue'
   import ExaiIcon from '@/components/exai/ExaiIcon.vue'
 
-  const $style = useCssModule();
   const $slots = useSlots();
 
   const props = defineProps({
@@ -62,4 +61,11 @@
     gap:10px;
     align-items:center;
   }
+
+  @media only screen and (min-width: 1500px) {
+  /* For desktop: */
+  .exai-header{
+    padding:0 80px;
+  }
+}
 </style>

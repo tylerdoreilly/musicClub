@@ -1,11 +1,15 @@
 <script setup>
-    import { computed, ref, toRefs, useCssModule, onMounted } from 'vue'
-    import { useRouter } from 'vue-router'
-    import { sortBy} from 'lodash';
-    import { storeToRefs } from 'pinia';
+    import { computed, ref, toRefs } from 'vue'
     import { albumsStore } from '@/stores/albums';
+    import { useRouter } from 'vue-router'
+    import { sortBy } from 'lodash';
+    import ExaiIcon from '@/components/exai/ExaiIcon.vue';
+    import { useMediaQuery } from '@vueuse/core';
 
     const router = useRouter();
+    const useAlbumsStore = albumsStore();
+
+    const isLargeScreen = useMediaQuery('(min-width: 1500px)')
 
     const props = defineProps({
         data:{
@@ -26,14 +30,15 @@
 
     const { data, fields } = toRefs(props);
 
-    const useAlbumsStore = albumsStore();
-
     let sort = ref(false);
+    let sortedHeader = ref();
+    let sortIcon = ref('')
     let updatedList = ref([])
     let searchQuery = ref("");
     let albumQuery = ref("");
     let submitterQuery = ref("");
     let seasonQuery = ref("");
+    let isOpen = ref(false);
 
     const filteredList = computed(() => {
         return sortedList.value.filter((item) => {
@@ -65,13 +70,7 @@
             }
            
         });
-    })
-
-    const sortTable = (col) => {
-        console.log('col',col)
-      sort.value = true
-      updatedList.value = sortBy(data.value,col.field)
-    }
+    });
 
     const sortedList = computed(() => {
       if (sort.value) {
@@ -82,28 +81,95 @@
       }
     });
 
+    const sortTable = (col, index) => {
+        sortedHeader.value = index;
+        isOpen = !isOpen
+        sort.value = true
+
+        if(isOpen == false){
+            sortIcon.value = 'chevron-up'
+            updatedList.value = sortBy(data.value,col.field)
+        } else {
+            sortIcon.value = 'chevron-down'
+            updatedList.value = sortBy(data.value, col.field).reverse()
+        }
+    };
+
+    const activeSort = (index) => {
+      if (sort.value == true && sortedHeader.value == index) {
+         return {color: '#fff'}
+      }
+      else{
+         return {color: '#5e5e5e'};
+      }
+    };
+
     const goToAlbum = (selectedAlbum) => {
         useAlbumsStore.addAlbumDetails(selectedAlbum);
         console.log('selected album', selectedAlbum)
         const albumId = selectedAlbum.album
         router.push({ name: 'album', params: { id: albumId } })
-    }
+    };
+
+    const setColumnWidth = (field) => {
+        if(isLargeScreen.value){
+            if(field.style) {
+                return {width: field.style.width + 'px'}
+            }
+            else if(field.style && field.field == 'album'){
+                return {width: field.style.width + 'px', display: 'table-header-group'}
+            }
+            else {
+                return {width: ' '}
+            }
+        } else  {
+            if(field.style && field.field == 'artist') {
+                return {width: '200px'}
+            }
+            else if(field.style && field.field == 'by'){
+                return {width: field.style.width + 'px'}
+            }
+            else if(field.field == 'album'){
+                return {display: 'none'}
+            }
+        }
+      
+    };
+
+    const clearInput = (query) => {
+        if (query == 'searchQuery'){
+            searchQuery.value = '' 
+        }
+        if (query == 'albumQuery'){
+            albumQuery.value = '' 
+        }
+        if (query == 'submitterQuery'){
+            submitterQuery.value = '' 
+        }
+        if (query == 'seasonQuery'){
+            seasonQuery.value = '' 
+        }
+    };
 
 </script>
 
 <template>
     <div class="table-controls">
         <div class="exai-search">
+            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="searchQuery" @click="clearInput('searchQuery')"></ExaiIcon>
             <input type="search" class="exai-search__input" v-model='searchQuery' placeholder="Search By Artist">
         </div>
         <div class="exai-search">
+            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="albumQuery" @click="clearInput('albumQuery')"></ExaiIcon>
             <input type="search" class="exai-search__input" v-model='albumQuery' placeholder="Search By Album">
         </div>
         <div class="exai-search">
+            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="submitterQuery" @click="clearInput('submitterQuery')"></ExaiIcon>
             <input type="search" class="exai-search__input" v-model='submitterQuery' placeholder="Search By Submitter">
         </div>
         <div class="exai-search">
-            <input type="search" class="exai-search__input" v-model='seasonQuery' placeholder="Search By Seasonr">
+            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="seasonQuery" @click="clearInput('seasonQuery')"></ExaiIcon>
+            <input type="search" class="exai-search__input" v-model='seasonQuery' placeholder="Search By Season">
         </div>
     </div>
    
@@ -112,16 +178,22 @@
             <tr >
                 <th 
                     class="table-th" 
-                    :style="{ width: field.style ? field.style.width + 'px' : '' }"
-                    v-for="field in fields" 
+                    v-for="(field, index) in fields" 
+                    :style="setColumnWidth(field)"
                     :key='field'
-                    @click="sortTable(field)">
+                    @click="sortTable(field, index)"
+                >
 
-                        <div class="table-th__inner">
-                            <span class="table-th__text">
+                    <div class="table-th__inner">
+                        <span class="table-th__text" :style="activeSort(index)">
+                            <slot name="headers" :field="field" >
                                 {{ field.title }}
-                            </span>
-                        </div> 
+                            </slot> 
+                        </span>
+                        <template v-if="sortIcon && sortedHeader == index">
+                            <ExaiIcon :icon="sortIcon" size="14px" fill="#fff"></ExaiIcon>
+                        </template>                           
+                    </div> 
                 </th>
             </tr>
         </thead>
@@ -133,26 +205,15 @@
 
                 <td 
                     class="table-td" 
-                    :style="{ width: field.style ? field.style.width + 'px' : '' }"
+                    :style="setColumnWidth(field)"
                     v-for="field in fields" 
                     :key='field'
-                    @click="goToAlbum(item)">
+                    @click="goToAlbum(item)"
+                >
 
-                    <template v-if="field.field === 'artist'">
-                        <strong>{{item[field.field]}}</strong>
-                    </template>
-
-                    <template v-else-if="field.field === 'album'">
-                        <strong>{{item[field.field]}}</strong>
-                    </template>
-
-                    <template v-else-if="field.field === 'avg'">
-                        <strong>{{item[field.field]}}</strong>
-                    </template>
-
-                    <template v-else>
+                    <slot name="columns" :item="item" :field="field" >
                         {{item[field.field]}}
-                    </template>
+                    </slot> 
                    
                 </td>
             </tr>
@@ -160,38 +221,44 @@
     </table> 
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
    .table{
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
     }
+
     .table-header{
         display: table-header-group;
         vertical-align: middle;
         border-color: inherit;
     }
+
     tr{
         display: table-row;
         vertical-align: inherit;
         border-color: inherit;
     }
+
     .table-th {
-    border-top: 0;
-    padding: 0 8px;
-    position: relative;
-    vertical-align: bottom;
+        border-top: 0;
+        padding: 0 8px;
+        position: relative;
+        vertical-align: bottom;
     }
 
     .table-th__inner {
         align-items: flex-end;
         border-bottom: 1px solid transparent;
         display: flex;
+        flex-direction: row;
+        gap:5px;
         justify-content: flex-start;
         margin-bottom: 16px;
         padding-bottom: 2px;
     }
+
     .table-th__inner .table-th__text {
         font-style: normal;
         font-size: 14px;
@@ -202,6 +269,11 @@
         overflow: hidden;
         text-align: left;
         text-overflow: ellipsis;
+        cursor:pointer;
+
+        &:hover{
+            color:white !important;
+        }
     }
 
     .table-tbody {
@@ -260,6 +332,7 @@
     strong{
         font-weight:bold
     }
+
     .high-score{
         color:$exai-green;
     }
@@ -273,6 +346,18 @@
         gap:20px;
     }
 
+    .exai-search{
+        position:relative;
+    }
+
+    .exai-search__clear{
+        position:absolute;
+        top:11px;
+        right:10px;
+        z-index:1px;
+        cursor:pointer;
+    }
+
     .exai-search__input{
         background:$exai-dark-soft;
         color:$exai-text-dark-1;
@@ -282,5 +367,14 @@
         padding:0px 12px;
         font-size:14px;
         min-width:250px;
+    }
+
+    .exai-search__input:focus{
+        outline: none;
+        border-bottom:2px solid rgba(235, 235, 235, 0.64);
+    }
+
+    .exai-search__input::-webkit-search-cancel-button {
+        appearance: none;
     }
 </style>

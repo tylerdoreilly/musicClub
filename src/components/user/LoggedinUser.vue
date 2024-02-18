@@ -1,16 +1,18 @@
 <script setup>
+  import { ref, toRefs } from 'vue'
   import { useAuth0 } from "@auth0/auth0-vue";
-  import LogoutButton from '@/components/auth/LogoutButton.vue';
+  import VueAvatar from "@webzlodimir/vue-avatar";
+  import "@webzlodimir/vue-avatar/dist/style.css";
 
   const { user } = useAuth0();
-  
+
 </script>
 
 <template>
     <div class="user">
       <div class="user__name">{{ user.name }}</div>
+      <vue-avatar background-color="#44bd87" :username="user.name" :size="26"/>
     </div>
-    <LogoutButton />
 </template>
 
 <style lang="scss" scoped>

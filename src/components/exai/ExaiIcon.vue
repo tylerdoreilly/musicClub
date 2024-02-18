@@ -54,7 +54,12 @@ const iconStyles = computed(() =>{
 </script>
 
 <template>
-  <vue-feather :type="icon" :size="size" :fill="fill" :stroke="stroke" :class="[$style['exai-icon'], iconStyles]"/>
+  <vue-feather 
+    :type="icon" 
+    :size="size" 
+    :fill="fill" 
+    :stroke="stroke" 
+    :class="[$style['exai-icon'], iconStyles]" />
 </template>
 
 <style lang="scss" module>
@@ -62,6 +67,7 @@ const iconStyles = computed(() =>{
     color:$exai-text-dark-1;
     vertical-align:middle;
     display:inline-flex;
+
     &--primary{
       color:$base-white;
     }

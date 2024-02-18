@@ -3,42 +3,25 @@
   import { RouterLink, RouterView } from 'vue-router'
   import ExaiHeader from '@/components/exai/ExaiHeader.vue'
   import LoggedinUser from '@/components/user/LoggedinUser.vue'
+  import UserMenu from '@/components/user/UserMenu.vue'
+  import ExaiPopover from '@/components/exai/ExaiPopover.vue'
   import { useAuth0 } from "@auth0/auth0-vue";
-  import axios from 'axios'
   import "exai-components/dist/style.css";
 
-  const items = ref([]);
   const { isAuthenticated } = useAuth0();
   const { isLoading } = useAuth0();
 
-  const fetchData = async () =>{
-    axios
-    .get("http://localhost:8080/api/")
-    .then(response => {
-      let test = response.data;
-      console.log('test response',test)
-    })
-    
-    .catch(error => alert(error));
-  }
-
-  onMounted(() => {
-    //fetchData();
-  })
 </script>
 
 <template>
   <ExaiHeader appTitle="Record Club" v-if="isAuthenticated">
     <template #headerActions>
-      <!-- <div>Hello</div> 
-      <div>Tyler</div> 
-      <exai-popover text="Popover">
-        <p>Hey this is a test</p>
-      </exai-popover> -->
-
-      <template v-if="isAuthenticated">
-        <LoggedinUser />
-      </template>
+      <ExaiPopover text="Popover" placement="bottom-end" >
+        <template #popoverButton>
+          <LoggedinUser />
+        </template>
+        <UserMenu></UserMenu>
+      </ExaiPopover>
     </template>
   </ExaiHeader>
 

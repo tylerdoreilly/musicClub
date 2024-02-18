@@ -2,22 +2,19 @@
   import { computed, ref, toRefs, useCssModule, onMounted } from 'vue'
   import { storeToRefs } from 'pinia';
   import { albumsStore } from '@/stores/albums';
-  import AlbumsList from '@/components/AlbumsList.vue';
   import ExaiTable from '@/components/ExaiTable.vue';
   import ExaiLoaderNew from '@/components/ExaiLoaderNew.vue';
+  import AvgScore from '@/components/AvgScore.vue';
+  import { useMediaQuery } from '@vueuse/core';
 
   const useAlbumsStore = albumsStore();
-
   const { albumsList, pageLoad, albumTableHeaders, error } = storeToRefs(useAlbumsStore);
-  const selectedSeason = ref('');
 
   useAlbumsStore.fetchAlbumsList();
 
+  const isLargeScreen = useMediaQuery('(min-width: 1500px)');
+
   console.log('albums', albumsList)
-  // function handleSeasonSelection(val){
-  //   selectedSeason.value = val;
-  //   useSeasonsStore.fetchSeasonData(selectedSeason.value);
-  // }
 
 </script>
 
@@ -31,8 +28,67 @@
     <ExaiLoaderNew variation="page" v-if="pageLoad"></ExaiLoaderNew>
 
     <template v-else>
-        <!-- <albums-list :data="albumsList"></albums-list> -->
-        <exai-table :data="albumsList" :fields="albumTableHeaders"></exai-table>
+        <exai-table 
+          :data="albumsList" 
+          :fields="albumTableHeaders">
+
+            <template #headers="{ field }">
+              <!-- {{ field }} -->
+              <template v-if="field.field === 'artist'">
+                <strong>{{field.title}}</strong>
+                </template>
+            </template>
+        
+            <template #columns="{ item, field }">
+              <template v-if="isLargeScreen">
+                <template v-if="field.field === 'artist'">
+                  <strong>{{item[field.field]}}</strong>
+                </template>
+
+                <template v-else-if="field.field === 'album'">
+                    <strong>{{item[field.field]}}</strong>
+                </template>
+
+                <template v-else-if="field.field === 'season'">
+                    Season {{item[field.field]}}
+                </template>
+
+                <template v-else-if="field.field === 'avg'">
+                    <AvgScore :avgScore="item[field.field]"></AvgScore>
+                </template>
+
+                <template v-else>
+                    {{item[field.field]}}
+                </template>          
+              </template>
+              <template v-else>
+                <template v-if="field.field === 'artist'">
+                  <div class="grouped-cols">
+                    <span>{{item[field.field]}}</span>
+                    <template v-if="item.album"> <strong>{{item.album}}</strong></template>
+                  </div>
+                  
+                </template>
+
+                <template v-else-if="field.field === 'album'">
+                    <strong>{{item[field.field]}}</strong>
+                </template>
+
+                <template v-else-if="field.field === 'season'">
+                    Season {{item[field.field]}}
+                </template>
+
+                <template v-else-if="field.field === 'avg'">
+                    <AvgScore :avgScore="item[field.field]"></AvgScore>
+                </template>
+
+                <template v-else>
+                    {{item[field.field]}}
+                </template>          
+              </template>
+             
+            </template>        
+        </exai-table>
     </template>
   </main>
  
@@ -82,6 +138,16 @@
   &__title{
     font-size:22px;
   }
+}
+
+.grouped-cols{
+  display:flex;
+  flex-direction: column;
+  gap:2px;
+}
+
+strong {
+    font-weight: bold;
 }
 
 @media (min-width: 1024px) {

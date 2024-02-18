@@ -51,6 +51,7 @@ const buttonStyleModifiers = computed(() =>{
   styleObj[$style['exai-button--primary']] = variation.value == 'primary';
   styleObj[$style['exai-button--secondary']] = variation.value == 'secondary';
   styleObj[$style['exai-button--icon-only']] = variation.value == 'iconOnly';
+  styleObj[$style['exai-button--flat']] = variation.value == 'flat';
   return styleObj
 })
 
@@ -112,8 +113,13 @@ const iconSize = computed(() => {
 
     &--secondary {
       background: $base-white;
-      color:#2c3e50;
-      
+      color:#2c3e50;      
+    }
+
+    &--flat{
+      border:none;
+      background:transparent;
+      color:rgba(235, 235, 235, 0.64);
     }
 
     &--icon-only {

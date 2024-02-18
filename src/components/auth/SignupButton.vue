@@ -1,6 +1,7 @@
 <script setup>
   import { useAuth0 } from "@auth0/auth0-vue";
-  
+  import ExaiButton from '@/components/exai/ExaiButton.vue';
+
   const { loginWithRedirect } = useAuth0();
   
   const handleSignUp = () => {
@@ -16,5 +17,5 @@
 </script>
 
 <template>
-    <exai-button text="Sign Up" @click="handleSignUp"> Sign Up </exai-button>
+    <ExaiButton text="Sign Up" @click="handleSignUp"> Sign Up </ExaiButton>
 </template>

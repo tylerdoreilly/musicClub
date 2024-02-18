@@ -13,7 +13,7 @@ export const albumsStore = defineStore({
           title: 'Artist',
           field:'artist',
           style:{
-            width:400,
+            width:350,
           }
         },
         {
@@ -25,7 +25,10 @@ export const albumsStore = defineStore({
         },
         {
           title: 'Submitted By',
-          field:'by'
+          field:'by',
+          style:{
+            width:150,
+          }
         },
         {
           title: 'Season',

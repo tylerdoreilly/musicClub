@@ -8,7 +8,7 @@
 }
 
 .layout-fluid{
-  margin: 0px 80px;
+  margin: 0px 15px;
   padding: 0px 0rem 2rem 0rem;
   font-weight: normal;
 }
@@ -20,23 +20,11 @@ a,
   transition: 0.4s;
   padding: 3px;
 }
-/* 
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+@media only screen and (min-width: 1500px) {
+  /* For desktop: */
+  .layout-fluid{
+    margin: 0px 80px;
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */ 
