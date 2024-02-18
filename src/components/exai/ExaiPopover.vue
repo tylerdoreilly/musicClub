@@ -81,6 +81,7 @@ function hide () {
   background:#202127;
   padding:20px;
   color:rgba(235, 235, 235, 0.64);
+  z-index:100;
 }
 
 .arrow,
