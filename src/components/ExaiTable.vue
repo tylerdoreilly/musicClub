@@ -60,7 +60,7 @@
             }
             if ( seasonQuery.value != '' && seasonQuery.value ) {
                 return (
-                    item.season.toLowerCase().indexOf(seasonQuery.value.toLowerCase()) != -1
+                    item.season == seasonQuery.value
                 )
             }
             else {
@@ -85,13 +85,23 @@
         sortedHeader.value = index;
         isOpen = !isOpen
         sort.value = true
+        const stringSorter = item => item[col.field].toLowerCase();
 
         if(isOpen == false){
             sortIcon.value = 'chevron-up'
-            updatedList.value = sortBy(data.value,col.field)
+            if(col.sortType === 'string'){
+                updatedList.value = sortBy(data.value, [stringSorter, col.field])
+            } else {
+                updatedList.value = sortBy(data.value, col.field)
+            }
+           
         } else {
             sortIcon.value = 'chevron-down'
-            updatedList.value = sortBy(data.value, col.field).reverse()
+            if(col.sortType === 'string'){
+                updatedList.value = sortBy(data.value, [stringSorter, col.field]).reverse()
+            } else {
+                updatedList.value = sortBy(data.value, col.field).reverse()
+            }
         }
     };
 

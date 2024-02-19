@@ -12,6 +12,7 @@ export const albumsStore = defineStore({
         {
           title: 'Artist',
           field:'artist',
+          sortType:'string',
           style:{
             width:350,
           }
@@ -19,6 +20,7 @@ export const albumsStore = defineStore({
         {
           title: 'Album',
           field:'album',
+          sortType:'string',
           style:{
             width:400,
           }
@@ -26,53 +28,65 @@ export const albumsStore = defineStore({
         {
           title: 'Submitted By',
           field:'by',
+          sortType:'string',
           style:{
             width:150,
           }
         },
         {
           title: 'Season',
-          field:'season'
+          field:'season',
+          sortType:'string'
         },
         {
           title: 'Matt',
-          field:'matt'
+          field:'matt',
+          sortType:'integer'
         },
         {
           title: 'Bill',
-          field:'bill'
+          field:'bill',
+          sortType:'integer'
         },
         {
           title: 'Dan',
-          field:'dan'
+          field:'dan',
+          sortType:'integer'
         },
         {
           title: 'Ty',
-          field:'ty'
+          field:'ty',
+          sortType:'integer'
         },
         {
           title: 'Joel',
-          field:'joel'
+          field:'joel',
+          sortType:'integer'
         },
         {
           title: 'Dwayne',
-          field:'dwayne'
+          field:'dwayne',
+          sortType:'integer'
         },
         {
           title: 'Joe',
-          field:'joe'
+          field:'joe',
+          sortType:'integer'
         },
         {
           title: 'Bart',
-          field:'bart'
+          field:'bart',
+          sortType:'integer'
         },
         {
           title: 'Kris',
-          field:'kris'
+          field:'kris',
+          sortType:'integer'
         },
         {
           title: 'Avg',
-          field:'avg'
+          field:'avg',
+          sortType:'integer'
         }
       ],
       albumTrackHeaders: [

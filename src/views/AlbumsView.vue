@@ -92,12 +92,6 @@
     </template>
   </main>
  
- 
-  
-
- 
- 
-  
 </template>
 
 <style lang="scss">
