@@ -15,11 +15,16 @@ const router = createRouter({
       component: () => import('../views/AlbumsView.vue'),
       beforeEnter: authGuard,
     },
-
     {
       path: '/album/:id',
       name: 'album',
       component: () => import('../views/AlbumView.vue'),
+      beforeEnter: authGuard,
+    },
+    {
+      path: '/songs',
+      name: 'songs',
+      component: () => import('../views/SongsView.vue'),
       beforeEnter: authGuard,
     },
     {

@@ -1,13 +1,8 @@
 <script setup>
     import { computed, ref, toRefs } from 'vue'
-    import { albumsStore } from '@/stores/albums';
-    import { useRouter } from 'vue-router'
     import { sortBy } from 'lodash';
     import ExaiIcon from '@/components/exai/ExaiIcon.vue';
     import { useMediaQuery } from '@vueuse/core';
-
-    const router = useRouter();
-    const useAlbumsStore = albumsStore();
 
     const isLargeScreen = useMediaQuery('(min-width: 1500px)')
 
@@ -38,8 +33,7 @@
     let updatedList = ref([])
     let searchQuery = ref("");
     let albumQuery = ref("");
-    let submitterQuery = ref("");
-    let seasonQuery = ref("");
+    let bracketQuery = ref("");
     let isOpen = ref(false);
 
     const filteredList = computed(() => {
@@ -52,17 +46,12 @@
             }
             if ( albumQuery.value != '' && albumQuery.value ) {
                 return (
-                    item.album.toLowerCase().indexOf(albumQuery.value.toLowerCase()) != -1
+                    item.song.toLowerCase().indexOf(albumQuery.value.toLowerCase()) != -1
                 )
             }
-            if ( submitterQuery.value != '' && submitterQuery.value ) {
+            if ( bracketQuery.value != '' && bracketQuery.value ) {
                 return (
-                    item.by.toLowerCase().indexOf(submitterQuery.value.toLowerCase()) != -1
-                )
-            }
-            if ( seasonQuery.value != '' && seasonQuery.value ) {
-                return (
-                    item.season == seasonQuery.value
+                    item.bracket == bracketQuery.value
                 )
             }
             else {
@@ -116,13 +105,6 @@
       }
     };
 
-    const goToAlbum = (selectedAlbum) => {
-        useAlbumsStore.addAlbumDetails(selectedAlbum);
-        console.log('selected album', selectedAlbum)
-        const albumId = selectedAlbum.album
-        router.push({ name: 'album', params: { id: albumId } })
-    };
-
     const setColumnWidth = (field) => {
         if(isLargeScreen.value){
             if(field.style) {
@@ -155,11 +137,8 @@
         if (query == 'albumQuery'){
             albumQuery.value = '' 
         }
-        if (query == 'submitterQuery'){
-            submitterQuery.value = '' 
-        }
-        if (query == 'seasonQuery'){
-            seasonQuery.value = '' 
+        if (query == 'bracketQuery'){
+            bracketQuery.value = '' 
         }
     };
 
@@ -173,15 +152,11 @@
         </div>
         <div class="exai-search">
             <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="albumQuery" @click="clearInput('albumQuery')"></ExaiIcon>
-            <input type="search" class="exai-search__input" v-model='albumQuery' placeholder="Search By Album">
+            <input type="search" class="exai-search__input" v-model='albumQuery' placeholder="Search By Song">
         </div>
         <div class="exai-search">
-            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="submitterQuery" @click="clearInput('submitterQuery')"></ExaiIcon>
-            <input type="search" class="exai-search__input" v-model='submitterQuery' placeholder="Search By Submitter">
-        </div>
-        <div class="exai-search">
-            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="seasonQuery" @click="clearInput('seasonQuery')"></ExaiIcon>
-            <input type="search" class="exai-search__input" v-model='seasonQuery' placeholder="Search By Season #">
+            <ExaiIcon icon="x" size="16px" class="exai-search__clear" v-if="bracketQuery" @click="clearInput('bracketQuery')"></ExaiIcon>
+            <input type="search" class="exai-search__input" v-model='bracketQuery' placeholder="Search By Bracket #">
         </div>
     </div>
     <table class="table">
@@ -219,7 +194,6 @@
                     :style="setColumnWidth(field)"
                     v-for="field in fields" 
                     :key='field'
-                    @click="goToAlbum(item)"
                 >
 
                     <slot name="columns" :item="item" :field="field" >

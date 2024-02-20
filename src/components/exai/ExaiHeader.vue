@@ -1,6 +1,7 @@
 <script setup>
   import { computed, toRefs, useSlots } from 'vue'
   import ExaiIcon from '@/components/exai/ExaiIcon.vue'
+  import PrimaryNav from '@/components/PrimaryNav.vue'
 
   const $slots = useSlots();
 
@@ -28,6 +29,7 @@
       <div class="exai-header__brand">
         <ExaiIcon icon="headphones" size="24" stroke="#44bd87"></ExaiIcon>
         <div class="exai-header__title">{{ appTitle }}</div>
+        <PrimaryNav />
       </div>
       
       <div class="exai-header__actions" v-if="hasHeaderActions">
