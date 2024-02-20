@@ -36,7 +36,7 @@ export const albumsStore = defineStore({
         {
           title: 'Season',
           field:'season',
-          sortType:'string'
+          sortType:'integer'
         },
         {
           title: 'Matt',
