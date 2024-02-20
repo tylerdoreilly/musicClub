@@ -36,21 +36,30 @@
               <!-- {{ field }} -->
               <template v-if="field.field === 'artist'">
                 <strong>{{field.title}}</strong>
-                </template>
+              </template>
+
+              <template v-else-if="field.field === 'by'">
+                  <template v-if="isLargeScreen"> {{field.title}}</template>
+                  <template v-else>By</template>
+              </template>
+
+              <template v-else>
+                    {{field.title}}
+                </template>     
             </template>
         
             <template #columns="{ item, field }">
-              <template v-if="isLargeScreen">
                 <template v-if="field.field === 'artist'">
                   <strong>{{item[field.field]}}</strong>
                 </template>
 
                 <template v-else-if="field.field === 'album'">
-                    <strong>{{item[field.field]}}</strong>
+                  <strong>{{item[field.field]}}</strong>
                 </template>
 
                 <template v-else-if="field.field === 'season'">
-                    Season {{item[field.field]}}
+                  <template v-if="isLargeScreen">Season {{item[field.field]}}</template>
+                  <template v-else>{{item[field.field]}}</template> 
                 </template>
 
                 <template v-else-if="field.field === 'avg'">
@@ -60,32 +69,7 @@
                 <template v-else>
                     {{item[field.field]}}
                 </template>          
-              </template>
-              <template v-else>
-                <template v-if="field.field === 'artist'">
-                  <div class="grouped-cols">
-                    <span>{{item[field.field]}}</span>
-                    <template v-if="item.album"> <strong>{{item.album}}</strong></template>
-                  </div>
-                  
-                </template>
-
-                <template v-else-if="field.field === 'album'">
-                    <strong>{{item[field.field]}}</strong>
-                </template>
-
-                <template v-else-if="field.field === 'season'">
-                    Season {{item[field.field]}}
-                </template>
-
-                <template v-else-if="field.field === 'avg'">
-                    <AvgScore :avgScore="item[field.field]"></AvgScore>
-                </template>
-
-                <template v-else>
-                    {{item[field.field]}}
-                </template>          
-              </template>
+               
              
             </template>        
         </exai-table>

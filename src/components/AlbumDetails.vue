@@ -71,7 +71,7 @@
         let objEight = {}
         let objNine = {}
         let collectAlbumsScores = [];
-
+        console.log('albumData.value',albumData.value)
         objOne.member = "Matt"
         objOne.score = albumData.value.matt
         objTwo.member = "Bill"

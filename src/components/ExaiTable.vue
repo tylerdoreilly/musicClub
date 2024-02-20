@@ -139,10 +139,10 @@
                 return {width: '200px'}
             }
             else if(field.style && field.field == 'by'){
-                return {width: field.style.width + 'px'}
+                return {width: '100px'}
             }
             else if(field.field == 'album'){
-                return {display: 'none'}
+                return {width: '200px'}
             }
         }
       
