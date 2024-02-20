@@ -43,6 +43,11 @@
                   <template v-else>By</template>
               </template>
 
+              <template v-else-if="field.field === 'season'">
+                  <template v-if="isLargeScreen"> {{field.title}}</template>
+                  <template v-else>SZN</template>
+              </template>
+
               <template v-else>
                     {{field.title}}
                 </template>     
@@ -84,7 +89,7 @@
   flex-direction: row;
   align-items:center;
   width:100%;
-  min-height:150px;
+  min-height:100px;
 
   &__title{
     color:white;
@@ -126,6 +131,13 @@
 
 strong {
     font-weight: bold;
+}
+
+@media only screen and (min-width: 1500px) {
+  /* For desktop: */
+  .page-header{
+    min-height:150px;
+  }
 }
 
 @media (min-width: 1024px) {
