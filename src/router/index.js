@@ -28,6 +28,12 @@ const router = createRouter({
       beforeEnter: authGuard,
     },
     {
+      path: '/stats',
+      name: 'stats',
+      component: () => import('../views/StatsView.vue'),
+      beforeEnter: authGuard,
+    },
+    {
       path: "/callback",
       name: "callback",
       redirect: to => {

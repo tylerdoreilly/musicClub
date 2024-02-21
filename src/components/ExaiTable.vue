@@ -9,7 +9,8 @@
     const router = useRouter();
     const useAlbumsStore = albumsStore();
 
-    const isLargeScreen = useMediaQuery('(min-width: 1500px)')
+    const isLargeScreen = useMediaQuery('(min-width: 1960px)')
+    const isMediumScreen = useMediaQuery('(max-width: 1435px)')
 
     const props = defineProps({
         data:{
@@ -129,20 +130,46 @@
                 return {width: field.style.width + 'px'}
             }
             else if(field.style && field.field == 'album'){
-                return {width: field.style.width + 'px', display: 'table-header-group'}
+                return {width: field.style.width + 'px'}
             }
             else {
-                return {width: ' '}
+                return {width: 'auto'}
             }
-        } else  {
+        } 
+        if(isMediumScreen.value){
+            if(field.field == 'album'){
+                return {width: field.style.width + 'px', display:'none'}
+            }
+            if(field.field == 'artist'){
+                return {width: '300px'}
+            }
+            if(field.field == 'by'){
+                return {width: '100px'}
+            }
+            
+            if(field.field == 'avg'){
+                return {width: '60px'}
+            }
+        }
+        
+        else  {
             if(field.style && field.field == 'artist') {
                 return {width: '200px'}
             }
-            else if(field.style && field.field == 'by'){
+            if(field.style && field.field == 'by'){
                 return {width: '100px'}
             }
-            else if(field.field == 'album'){
-                return {width: '200px'}
+            if(field.field == 'season'){
+                return {width: '70px'}
+            }
+            if(field.colType == 'user'){
+                return {width: '80px'}
+            }
+            if(field.field == 'avg'){
+                return {width: '60px'}
+            }
+            if(field.field == 'album'){
+                return {'width': '250px','max-width': '250px', 'min-width':'100px', display:'table-cell'}
             }
         }
       
@@ -192,10 +219,23 @@
                     v-for="(field, index) in fields" 
                     :style="setColumnWidth(field)"
                     :key='field'
-                    @click="sortTable(field, index)"
                 >
-
-                    <div class="table-th__inner">
+                    <template v-if="field.canGroup === true && isMediumScreen">  
+                        <div class="table-th__inner" >
+                            <template v-for="(subField, subIndex) in field.groupedHeaders" :key="subField">
+                                <div class="grouped" @click="sortTable(subField, subIndex)">
+                                    <span class="table-th__text" :style="activeSort(subIndex)">
+                                        {{subField.title}}
+                                    </span>
+                                    <template v-if="sortIcon && sortedHeader == subIndex">
+                                        <ExaiIcon :icon="sortIcon" size="14px" fill="#fff"></ExaiIcon>
+                                    </template>     
+                                </div>
+                            </template>                        
+                        </div> 
+                    </template>
+                    <template v-else>
+                        <div class="table-th__inner" @click="sortTable(field, index)">
                         <span class="table-th__text" :style="activeSort(index)">
                             <slot name="headers" :field="field" >
                                 {{ field.title }}
@@ -205,6 +245,7 @@
                             <ExaiIcon :icon="sortIcon" size="14px" fill="#fff"></ExaiIcon>
                         </template>                           
                     </div> 
+                    </template> 
                 </th>
             </tr>
         </thead>
@@ -285,6 +326,19 @@
         &:hover{
             color:white !important;
         }
+    }
+
+    .grouped {
+        padding-right:10px;
+    }
+
+    .table-th__inner--inline{
+        display:inline-flex;
+        align-items: flex-start;
+        text-align:left;
+        justify-content: flex-start;
+        flex-direction: column;
+        //width:50%;
     }
 
     .table-tbody {

@@ -16,10 +16,12 @@
     "@popperjs/core": "^2.11.8",
     "@vueuse/core": "^10.7.2",
     "@webzlodimir/vue-avatar": "^0.0.8",
+    "chart.js": "^4.4.1",
     "colorthief": "^2.4.0",
     "lodash": "^4.17.21",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.3.11",
+    "vue-chartjs": "^5.3.0",
     "vue-feather": "^2.0.0",
     "vue-router": "^4.2.5"
   },

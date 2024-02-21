@@ -13,6 +13,11 @@ export const albumsStore = defineStore({
           title: 'Artist',
           field:'artist',
           sortType:'string',
+          canGroup:true,
+          groupedHeaders:[
+            {field:'artist',  title: 'Artist', sortType:'string',},
+            {field:'album',  title: 'Album', sortType:'string',},
+          ],
           style:{
             width:350,
           }
@@ -41,47 +46,56 @@ export const albumsStore = defineStore({
         {
           title: 'Matt',
           field:'matt',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Bill',
           field:'bill',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Dan',
           field:'dan',
           sortType:'integer'
+          ,colType:'user'
         },
         {
           title: 'Ty',
           field:'ty',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Joel',
           field:'joel',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Dwayne',
           field:'dwayne',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Joe',
           field:'joe',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Bart',
           field:'bart',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Kris',
           field:'kris',
-          sortType:'integer'
+          sortType:'integer',
+          colType:'user'
         },
         {
           title: 'Avg',

@@ -12,7 +12,8 @@
 
   useAlbumsStore.fetchAlbumsList();
 
-  const isLargeScreen = useMediaQuery('(min-width: 1500px)');
+  const isLargeScreen = useMediaQuery('(min-width: 1960px)');
+  const isMediumScreen = useMediaQuery('(max-width: 1435px)');
 
   console.log('albums', albumsList)
 
@@ -33,12 +34,8 @@
           :fields="albumTableHeaders">
 
             <template #headers="{ field }">
-              <!-- {{ field }} -->
-              <template v-if="field.field === 'artist'">
-                <strong>{{field.title}}</strong>
-              </template>
 
-              <template v-else-if="field.field === 'by'">
+              <template v-if="field.field === 'by'">
                   <template v-if="isLargeScreen"> {{field.title}}</template>
                   <template v-else>By</template>
               </template>
@@ -55,11 +52,17 @@
         
             <template #columns="{ item, field }">
                 <template v-if="field.field === 'artist'">
-                  <strong>{{item[field.field]}}</strong>
+                  <template v-if="isMediumScreen">
+                    <div>{{item[field.field]}}</div>
+                    <div><strong>{{ item.album }}</strong></div>
+                  </template>
+                  <template v-else>
+                    {{item[field.field]}}
+                  </template>
                 </template>
 
                 <template v-else-if="field.field === 'album'">
-                  <strong>{{item[field.field]}}</strong>
+                 {{item[field.field]}}
                 </template>
 
                 <template v-else-if="field.field === 'season'">
